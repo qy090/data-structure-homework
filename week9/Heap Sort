@@ -1,0 +1,64 @@
+#include <stdio.h>
+void swap(int arr[], int a, int b){
+	int tmp;
+	tmp = arr[a];
+	arr[a] = arr[b];
+	arr[b] = tmp;
+}
+
+void heapify(int tree[], int n, int i){
+	if (i >= n){
+		return;
+	}
+	int max = i;
+	int c1 = 2 * i + 1;
+	int c2 = 2 * i + 2; 
+	if (c1 < n && tree[c1] > tree[max]){
+		max = c1;
+	}
+	if (c2 < n && tree[c2] > tree[max]){
+		max = c2;
+	}
+	if (max != i){
+		swap(tree, max, i);
+		heapify(tree, n, max);
+	}
+}
+
+void build_heapify(int tree[], int n){
+	int last_node = n - 1;
+	int parent = (last_node - 1) / 2;
+	int i;
+	for (i = parent; i >= 0; i--){
+		heapify(tree, n, i);
+	}
+}
+
+void heapify_sort(int tree[], int n){
+	build_heapify(tree, n);
+	int tmp = tree[0];
+	for (int i = n - 1; i >= 0; i--){
+		swap(tree, i, 0);
+		heapify(tree, i, 0);
+	}
+}
+
+int main(){
+	int tree[] = { 27,6,35,108,72,65 };
+	int n = 6;
+	printf("请输入原数组:\n"); 
+	for(int i=0;i<n;i++)
+		scanf("%d",&tree[i]);
+	printf("原数组为:");
+	for (int i = 0; i < n; i++){
+		printf("%d ", tree[i]);
+	}
+	printf("\n");
+	heapify_sort(tree, n);
+	printf("经过堆排序后的数组为：");
+	for (int i = 0; i < n; i++){
+		printf("%d ", tree[i]);
+	}
+	printf("\n");
+	return 0;
+}
