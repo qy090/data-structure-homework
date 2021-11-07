@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h> 
+#define ElementType int
+#define MAXSIZE 10
+#define MAX 11111
+typedef struct GraphNode
+{
+	int G[MAXSIZE][MAXSIZE];
+}Graph;
+void Prim(Graph* graph,int n,int dist[MAXSIZE],int parent[MAXSIZE])
+{
+	parent[0]=-1;
+	int vcount=0;
+	while(1)
+	{
+		int min=11112;
+		int v=-1;
+		for(int i=0;i<n;i++)
+		{
+			if(dist[i]!=0 && dist[i]<min)
+			{
+				min=dist[i];
+				v=i;	
+			}
+		}
+		if(v==-1)
+		{
+			if(vcount!=n)
+			{
+				printf("失败！");
+			}	
+			else
+			{
+				 
+				for(int i=0;i<n;i++)
+				{
+					printf("%d ",parent[i]);
+				} 
+			}
+			return;
+		}	
+		dist[v]=0;
+		vcount++;
+		for(int w=0;w<n;w++)
+		{
+			if(dist[w]!=0 && graph->G[v][w]<dist[w])
+			{
+				dist[w]=graph->G[v][w];
+				parent[w]=v;
+			}
+		}
+		
+	}
+	
+	
+}
+int main(int argc, char** argv) {
+	
+	Graph* graph=(Graph*)malloc(MAXSIZE*sizeof(GraphNode));
+	int node_num,edge_num;
+	scanf("%d %d",&node_num,&edge_num);
+	int dist[MAXSIZE];
+	int parent[MAXSIZE];
+	for(int i=0;i<node_num;i++)
+	{
+		dist[i]=MAX;
+		parent[i]=0;
+		for(int j=0;j<node_num;j++)
+		{
+			
+			graph->G[i][j]=MAX;
+		}		
+	}
+	for(int i=0;i<edge_num;i++)
+	{
+			
+		int start,end,value;
+		scanf("%d %d %d",&start,&end,&value);
+		graph->G[start][end]=value;
+		graph->G[end][start]=value;
+		
+	}
+	Prim(graph,node_num,dist,parent);
+	 
+	return 0;
+}
